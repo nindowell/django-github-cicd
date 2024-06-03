@@ -1,4 +1,4 @@
-name: service reload
+name: docker service reload
 on:
   push:
     paths-ignore:
