@@ -1,4 +1,4 @@
-name: reload services
+name: service reload
 on:
   push:
     paths-ignore:
