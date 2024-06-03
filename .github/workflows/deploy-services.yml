@@ -4,7 +4,7 @@ on:
     paths-ignore:
       - 'README.md'
       - '.editorconfig'
-      - '.github/**'
+      # - '.github/**'
 jobs:
   reload-services:
     runs-on: self-hosted
