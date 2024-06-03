@@ -1,7 +1,7 @@
 [![deploy workflow](https://github.com/nindowell/django-github-cicd/actions/workflows/deploy-services.yml/badge.svg)](https://github.com/nindowell/django-github-cicd/actions/workflows/deploy-services.yml)
 ### Description
 This is my template repository for future django projects with set up django custom user application (password change and reset with an email confirmation), crispy forms for bootstrap and Github Actions CI/CD workflow example.
- - Live version https://user-ready.nindo.online
+ - Live version https://user-ready.nindo.online (works on self-hosted runner)
 
 ### For deployment on a server
 #### Prerequisite
