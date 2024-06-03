@@ -1,46 +1,46 @@
-# name: reload services
-# on:
-#   push:
-#     paths-ignore:
-#       - 'README.md'
-#       - '.editorconfig'
-#       - '.github/**'
-# jobs:
-#   reload-services:
-#     runs-on: self-hosted
-#     steps:
-#       - name: stop docker compose and remove local images
-#         run: docker compose down --remove-orphans --rmi local
-#       - name: copy changes from repo
-#         uses: actions/checkout@v4
-#       - name: create env file
-#         run: |
-#           touch .env
-#           echo MY_DOMAIN="${{ secrets.MY_DOMAIN }}" >> .env
-#           echo DB_USER="${{ secrets.DB_USER }}" >> .env
-#           echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
-#           echo DB_NAME="${{ secrets.DB_NAME }}" >> .env
-#           echo DB_HOST="${{ secrets.DB_HOST }}" >> .env
-#           echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
-#           echo GUNICORN_PORT="8000" >> .env
-#           echo GUNICORN_WORKERS="2" >> .env
-#           echo GUNICORN_TIMEOUT="60" >> .env
-#           echo GUNICORN_LOG_LEVEL="info" >> .env
-#           echo GUNICORN_DJANGO_PROJECT_NAME="${{ secrets.DJANGO_PROJECT_NAME }}" >> .env
-#           echo DJANGO_SETTINGS_MODULE="${{ secrets.DJANGO_SETTINGS_MODULE }}" >> .env
-#           echo DJANGO_SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}" >> .env
-#           echo DJANGO_DEBUG="false" >> .env
-#           echo DJANGO_ALLOWED_HOSTS="127.0.0.1,localhost" >> .env
-#           echo DJANGO_CSRF_TRUSTED_ORIGINS="" >> .env
-#           echo DJANGO_EMAIL_HOST="${{ secrets.DJANGO_EMAIL_HOST }}" >> .env
-#           echo DJANGO_EMAIL_PORT="${{ secrets.DJANGO_EMAIL_PORT }}" >> .env
-#           echo DJANGO_EMAIL_HOST_USER="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
-#           echo DJANGO_EMAIL_HOST_PASSWORD="${{ secrets.DJANGO_EMAIL_PASSWORD }}" >> .env
-#           echo DJANGO_EMAIL_USE_TLS="false" >> .env
-#           echo DJANGO_SERVER_EMAIL="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
-#           echo DJANGO_DEFAULT_FROM_EMAIL="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
-#           echo DJANGO_SUPERUSER_USERNAME="${{ secrets.DJANGO_SU_USERNAME }}" >> .env
-#           echo DJANGO_SUPERUSER_PASSWORD="${{ secrets.DJANGO_SU_PASSWORD }}" >> .env
-#           echo DJANGO_SUPERUSER_EMAIL="${{ secrets.DJANGO_SU_EMAIL }}" >> .env
-#       - name: docker compose up!
-#         run: docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d
+name: first run
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - '.editorconfig'
+      - '.github/**'
+jobs:
+  reload-services:
+    runs-on: self-hosted
+    steps:
+      # - name: stop docker compose and remove local images
+      #   run: docker compose down --remove-orphans --rmi local
+      - name: copy changes from repo
+        uses: actions/checkout@v4
+      - name: create env file
+        run: |
+          touch .env
+          echo MY_DOMAIN="${{ secrets.MY_DOMAIN }}" >> .env
+          echo DB_USER="${{ secrets.DB_USER }}" >> .env
+          echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
+          echo DB_NAME="${{ secrets.DB_NAME }}" >> .env
+          echo DB_HOST="${{ secrets.DB_HOST }}" >> .env
+          echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
+          echo GUNICORN_PORT="8000" >> .env
+          echo GUNICORN_WORKERS="2" >> .env
+          echo GUNICORN_TIMEOUT="60" >> .env
+          echo GUNICORN_LOG_LEVEL="info" >> .env
+          echo GUNICORN_DJANGO_PROJECT_NAME="${{ secrets.DJANGO_PROJECT_NAME }}" >> .env
+          echo DJANGO_SETTINGS_MODULE="${{ secrets.DJANGO_SETTINGS_MODULE }}" >> .env
+          echo DJANGO_SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}" >> .env
+          echo DJANGO_DEBUG="false" >> .env
+          echo DJANGO_ALLOWED_HOSTS="127.0.0.1,localhost" >> .env
+          echo DJANGO_CSRF_TRUSTED_ORIGINS="" >> .env
+          echo DJANGO_EMAIL_HOST="${{ secrets.DJANGO_EMAIL_HOST }}" >> .env
+          echo DJANGO_EMAIL_PORT="${{ secrets.DJANGO_EMAIL_PORT }}" >> .env
+          echo DJANGO_EMAIL_HOST_USER="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
+          echo DJANGO_EMAIL_HOST_PASSWORD="${{ secrets.DJANGO_EMAIL_PASSWORD }}" >> .env
+          echo DJANGO_EMAIL_USE_TLS="false" >> .env
+          echo DJANGO_SERVER_EMAIL="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
+          echo DJANGO_DEFAULT_FROM_EMAIL="${{ secrets.DJANGO_EMAIL_USER }}" >> .env
+          echo DJANGO_SUPERUSER_USERNAME="${{ secrets.DJANGO_SU_USERNAME }}" >> .env
+          echo DJANGO_SUPERUSER_PASSWORD="${{ secrets.DJANGO_SU_PASSWORD }}" >> .env
+          echo DJANGO_SUPERUSER_EMAIL="${{ secrets.DJANGO_SU_EMAIL }}" >> .env
+      - name: docker compose up!
+        run: docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d
