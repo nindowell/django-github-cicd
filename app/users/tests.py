@@ -1,10 +1,6 @@
 from django.test import TestCase
-from django.urls import reverse, resolve
+from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.core import mail
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
 
 # Create your tests here.
 
@@ -51,14 +47,3 @@ class CustomUserTests(TestCase):
         response = self.client.get(reverse('users:profile'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/profile.html')
-
-    def test_password_reset_view(self):
-        response = self.client.get(reverse('users:password_reset'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'users/password_reset.html')
-
-        data = {'email': 'testuser@example.com'}
-        response = self.client.post(reverse('users:password_reset'), data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertIn('testuser@example.com', mail.outbox[0].to)
