@@ -1,4 +1,4 @@
-[![reload services](https://github.com/nindowell/django-docker-actions/actions/workflows/deploy-services.yml/badge.svg)](https://github.com/nindowell/django-docker-actions/actions/workflows/deploy-services.yml)
+[![deploy workflow](https://github.com/nindowell/django-github-cicd/actions/workflows/deploy-services.yml/badge.svg)](https://github.com/nindowell/django-github-cicd/actions/workflows/deploy-services.yml)
 > This repository is copied from [github amerkurev's django template](https://github.com/amerkurev/django-docker-template/) repository and modified for personal projects with github actions workflow setup
 
 ### To clean up
@@ -21,8 +21,8 @@ For the Let's Encrypt HTTP challenge you will need:
 #### Steps on a server
 1. Clone the repository on your host and go to the directory:
 ```console
-git clone https://github.com/nindowell/django-docker-actions
-cd django-docker-actions
+git clone https://github.com/nindowell/django-github-cicd
+cd django-github-cicd
 ```
 
 2. Run, specifying your domain in .env file MY_DOMAIN=your.domain.com:
