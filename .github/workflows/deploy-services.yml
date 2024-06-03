@@ -1,16 +1,16 @@
-name: first run
+name: reload services
 on:
   push:
     paths-ignore:
       - 'README.md'
       - '.editorconfig'
-      # - '.github/**'
+      - '.github/**'
 jobs:
   reload-services:
     runs-on: self-hosted
     steps:
-      # - name: stop docker compose and remove local images
-      #   run: docker compose down --remove-orphans --rmi local
+      - name: stop docker compose and remove local images
+        run: docker compose down --remove-orphans --rmi local
       - name: copy changes from repo
         uses: actions/checkout@v4
       - name: create env file
