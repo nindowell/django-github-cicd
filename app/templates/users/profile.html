@@ -1,6 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}profile{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "styles.css" %}">
+{% endblock styles %}
+
 
 {% block content %}
 <div class="container">
@@ -11,5 +17,6 @@
     {% else %}
         <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:signup' %}">create new account</a>
     {% endif %}
+    <p class="main-text">static 'styles.css' text</p>
 </div>
 {% endblock content %}
