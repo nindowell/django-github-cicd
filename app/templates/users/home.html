@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}home{% endblock title %}
+
+{% block styles %}{% endblock styles %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-6">Hello world</h1>
+    {% if user.is_authenticated %}
+        <p>hello, <a href="{% url 'users:profile' %}">{{ user.username }}</a></p>
+        {% if user.is_superuser  %}
+            <a href="{% url 'admin:index' %}">admin page</a>
+        {% endif %}
+        {% comment %} Now in django 5 i have to pass a logout form with csrf token {% endcomment %}
+        <form method="post" action="{% url 'users:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:signup' %}">create new account</a>
+        <p>if you forgot password -> <a href="{% url 'users:password_reset' %}">reset password</a></p>
+    {% endif %}
+</div>
+{% endblock content %}

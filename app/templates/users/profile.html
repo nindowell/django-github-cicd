@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}profile{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-6">Profile page</h1>
+    {% if user.is_authenticated %}
+        <p>hi, {{ user.username }}!</p>
+        <a href="{% url 'users:password_change' %}">change password</a>
+    {% else %}
+        <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:signup' %}">create new account</a>
+    {% endif %}
+</div>
+{% endblock content %}

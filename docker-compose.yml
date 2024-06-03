@@ -1,0 +1,93 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15.7
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
+    volumes:
+      - "/home/user/postgres-data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+
+  django:
+    build: .
+    image: django-docker
+    container_name: django
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - "staticfiles-data:/var/www/static"
+      - "media-data:/var/www/media"
+    depends_on:
+      - postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.development.rule=Host(`127.0.0.1`) || Host(`localhost`)"
+      - "traefik.http.routers.development.entrypoints=web"
+      - "traefik.http.routers.development.priority=1"
+
+  nginx:
+    image: nginx:1.23-alpine
+    env_file: .env
+    restart: unless-stopped
+    container_name: nginx
+    volumes:
+      - type: volume
+        source: media-data
+        target: /usr/share/nginx/html/media
+        read_only: true
+        volume:
+          nocopy: true
+      - type: volume
+        source: staticfiles-data
+        target: /usr/share/nginx/html/static
+        read_only: true
+        volume:
+          nocopy: true
+    depends_on:
+      - django
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.staticfiles.rule=PathPrefix(`/static/`) || PathPrefix(`/media/`)"
+      - "traefik.http.routers.staticfiles.entrypoints=web"
+      - "traefik.http.routers.staticfiles.priority=2"
+
+  reverse-proxy:
+    image: traefik:v3.0.0
+    env_file: .env
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.dashboard=true"
+      - "--accesslog=true"
+      - "--log.level=INFO"
+      - "--log.filepath=/var/log/traefik.log"
+      - "--accesslog.filepath=/var/log/traefik-access.log"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entrypoint.scheme=https"
+      - "--certificatesresolvers.le-resolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.le-resolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.le-resolver.acme.email=nindowell@gmail.com"
+      - "--certificatesresolvers.le-resolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080"
+    volumes:
+      - "letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/home/user/traefik-log:/var/log"
+
+volumes:
+  staticfiles-data:
+  media-data:
+  letsencrypt:
